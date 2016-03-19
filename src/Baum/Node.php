@@ -1223,8 +1223,12 @@ abstract class Node extends Model
         $self = $this;
 
         $this->getConnection()->transaction(function () use ($self) {
-            $self->reload();
-
+            try {
+                $self->reload();
+            }catch(\Exception $e) {
+                return;
+            }
+            
             $lftCol = $self->getLeftColumnName();
             $rgtCol = $self->getRightColumnName();
             $lft = $self->getLeft();
